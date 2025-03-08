@@ -16,3 +16,11 @@ a______b
 ab_cd_ef
 fff_
 ttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt
+MainPrgm L3_software ;
+Var
+< !- Partie déclaration - !>
+BeginPg
+{
+{-- Partie Instruction --}
+}
+EndPg ;

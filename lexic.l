@@ -1,6 +1,7 @@
 %{
 
 #include<stdio.h>
+
 int num_de_lignes = 1 ;
 
 %}
@@ -12,6 +13,7 @@ chaine \"[^\"]*\"
 commentaire_une_ligne "<!-"[^\n]*"-!>"
 commentaire_plusieurs_lignes "{--"(.|\n)*"--}" 
 idf {lettre}([a-z0-9]*_?[a-z0-9])*
+
 
 
 
@@ -42,7 +44,8 @@ output {printf("mot cle : %s \n",yytext);}
 "@define const" {printf("declaration const \n");}
 
 
-{chiffre} {printf("chiffre \n");}
+{chiffre} {printf("chiffre \n");
+}
 {chaine} {printf("chain de car: %s \n",yytext);}
 {commentaire_une_ligne} {printf("un commentaire une ligne \n");}
 {commentaire_plusieurs_lignes} {printf("un commentaire plusieurs lignes \n");}
@@ -67,8 +70,8 @@ output {printf("mot cle : %s \n",yytext);}
 "/" {printf("division \n");}
 ":=" {printf("affectation \n");}
 \"  {printf("Guillemets \n");}
-
-
+"[" {printf("corechets ouvrante \n");}
+"]" {printf("corechets fermente \n");}
 
 "<" {printf("inferieur \n");}
 ">" {printf("superieur \n");}
