@@ -1,3 +1,4 @@
+
 %{
 
 #include<stdio.h>
@@ -14,12 +15,14 @@ commentaire_une_ligne "<!-"[^\n]*"-!>"
 commentaire_plusieurs_lignes "{--"(.|\n)*"--}" 
 idf {lettre}([a-z0-9]*_?[a-z0-9])*
 entier_non_signer ([1-9][0-9]*|0)
-entier_signer {"("(-|+)([1-9][0-9]*|0)")"}
+entier_signer "("[-+]?[0-9]+")"
+reel_non_signer ([1-9]*|0)(".")([0-9]+)
+reel_signer "("[-+]?([1-9]*|0)(".")([0-9]+)")"
 
 
 %%
 
-\n {num_de_lignes++ ;}
+\n {num_de_lignes++ ;  printf("le nombre de linge : %d \n",num_de_lignes);}
 
 MainPrgm {printf("mot cle : %s \n",yytext);}
 Var {printf("mot cle : %s \n",yytext);}
@@ -48,7 +51,16 @@ output {printf("mot cle : %s \n",yytext);}
 }
 {chaine} {printf("chain de car: %s \n",yytext);}
 {commentaire_une_ligne} {printf("un commentaire une ligne \n");}
-{commentaire_plusieurs_lignes} {printf("un commentaire plusieurs lignes \n");}
+{commentaire_plusieurs_lignes} {
+    printf("un commentaire plusieurs lignes \n");
+    char *varchar = strdup(yytext);
+    int j;  
+    for (j = 0; varchar[j] != '\0'; j++) { 
+        if (varchar[j] == '\n') {
+            num_de_lignes++;
+        }
+    }
+}
 {idf} { if (yyleng > 14) 
     {printf ("erreur lexicale : le IDF depasse 14 caracteres \n");}
     else{
@@ -56,21 +68,34 @@ output {printf("mot cle : %s \n",yytext);}
 } 
 {entier_non_signer} { printf("entier positif\n"); }
 
-{entier_signer} {printf("entier signer \n");
+{entier_signer} {
         char *varstr=strdup(yytext+1);
         varstr[strlen(varstr)-1]='\0';
-        valeur= atoi(varstr);
+        int valeur= atoi(varstr);
           if (valeur >= -32768 && valeur <= 32767) {
         if (valeur < 0) {
-            printf("entier négatif accepté\n"); 
+            printf("entier signe negatif \n"); 
         } else {
-            printf("entier positif accepté\n"); 
+            printf("entier  signe positif \n"); 
         }
     } else {
         printf("erreur : le nombre n'est pas dans la plage des valeurs\n");
     }
 }
 
+
+{reel_non_signer} { printf("reel non signe positif\n"); }
+{reel_signer} {
+        char *varstr = strdup(yytext+ 1); 
+        varstr[strlen(varstr) - 1] = '\0';
+        double valeur = strtod(varstr, NULL);
+
+        if (valeur < 0) {
+            printf("reel signe negatif\n"); 
+        } else {
+            printf("reel signe positif \n"); 
+        }
+}
 
 ! {printf("operateur : negation \n" );}
 ; {printf("pvg\n");}

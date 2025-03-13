@@ -1,26 +1,4 @@
-Var
-int ,
-let
-;
-:=
-"hello world"
-@define const
-<!- commentaire_une_ligne -!>
-{--commentaire
-plusieur
-ligne--}
-a123
-abc_def
-z9x_y8
-a______b
-ab_cd_ef
-fff_
-ttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt
-MainPrgm L3_software ;
-Var
-< !- Partie déclaration - !>
-BeginPg
-{
-{-- Partie Instruction --}
-}
-EndPg ;
+(-999999999)
+jhh
+(-5.06)
+0.2
