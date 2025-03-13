@@ -1,7 +1,7 @@
 %{
 
 #include<stdio.h>
-
+#include<string.h>
 int num_de_lignes = 1 ;
 
 %}
@@ -13,8 +13,8 @@ chaine \"[^\"]*\"
 commentaire_une_ligne "<!-"[^\n]*"-!>"
 commentaire_plusieurs_lignes "{--"(.|\n)*"--}" 
 idf {lettre}([a-z0-9]*_?[a-z0-9])*
-
-
+entier_non_signer ([1-9][0-9]*|0)
+entier_signer {"("(-|+)([1-9][0-9]*|0)")"}
 
 
 %%
@@ -54,6 +54,22 @@ output {printf("mot cle : %s \n",yytext);}
     else{
     printf("idf : %s \n",yytext);}
 } 
+{entier_non_signer} { printf("entier positif\n"); }
+
+{entier_signer} {printf("entier signer \n");
+        char *varstr=strdup(yytext+1);
+        varstr[strlen(varstr)-1]='\0';
+        valeur= atoi(varstr);
+          if (valeur >= -32768 && valeur <= 32767) {
+        if (valeur < 0) {
+            printf("entier négatif accepté\n"); 
+        } else {
+            printf("entier positif accepté\n"); 
+        }
+    } else {
+        printf("erreur : le nombre n'est pas dans la plage des valeurs\n");
+    }
+}
 
 
 ! {printf("operateur : negation \n" );}
