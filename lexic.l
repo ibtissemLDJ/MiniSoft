@@ -22,9 +22,12 @@ reel_signer "("[-+]?([1-9]*|0)(".")([0-9]+)")"
 
 %%
 
-\n {num_de_lignes++ ;  printf("le nombre de linge : %d \n",num_de_lignes);}
+\n {
+    num_de_lignes++ ; 
+    printf("le nombre de linge : %d \n",num_de_lignes);
+ }
 
-MainPrgm {printf("mot cle : %s \n",yytext);}
+MainPrgm {printf("mot cle : %s \n",yytext); }
 Var {printf("mot cle : %s \n",yytext);}
 BeginPg {printf("mot cle : %s \n",yytext);}
 EndPg {printf("mot cle : %s \n",yytext);}
@@ -113,6 +116,7 @@ output {printf("mot cle : %s \n",yytext);}
 \"  {printf("Guillemets \n");}
 "[" {printf("corechets ouvrante \n");}
 "]" {printf("corechets fermente \n");}
+"=" { printf("egale\n");}
 
 "<" {printf("inferieur \n");}
 ">" {printf("superieur \n");}

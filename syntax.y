@@ -1,18 +1,51 @@
 
 %{
 #include<stdio.h>
-
 %}
 
-%token  MainPrgm var BeginPg EndPg let AND OR if then step do while for from to else int float input output const chiffre chaine comment_une comment_plsr idf exclamation pnt_virgul deux_pnts virgul par_ouvr par_ferm accolade_ouvr accolade_ferm soustract addition multipl division affect Guillemets inf sup inf_egal sup_egal egal diff {printf ("synatxe correcte"); YYACCEPT;}
-%start debut
-debut : MainPrgm idf pnt_virgul var declaration BeginPg accolade_ouvr instructions accolade_ferm EndPg pnt_virgul ; 
-declaration : let variables deux_pnts type pnt_virgul;
-variables: idf virgul variables| idf 
-type : float | int |corechet_ouvr type pnt_virgul corechet_ferm
-instructions :
+%token  MainPrgm idf pnt_virgul var BeginPg accolade_ouvr accolade_ferm EndPg let deux_pnts  const egal virgul float int entier_pos corechet_ouvr corechet_ferm  entier_neg  float_pos float_neg affect chaine if then parenthese_fermante parenthese_ouvrante  input output
+
+%start DEBUT
+
+
 %%
-debut : MainPrgm | declaration | 
+DEBUT : MainPrgm idf pnt_virgul var DECLARATION BeginPg accolade_ouvr INSTRUCTIONS accolade_ferm EndPg pnt_virgul;
+
+DECLARATION : let VARIABLE1 deux_pnts TYPE1 pnt_virgul | let VARIABLE2 deux_pnts TYPE2 pnt_virgul | const idf deux_pnts TYPE1 egal VALEUR
+
+VALEUR: entier_pos | entier_neg | float_pos | float_neg  
+
+VARIABLE1: idf virgul VARIABLE| idf 
+
+VARIABLE2 : idf
+
+TYPE1 : float | int 
+
+TYPE2 : corechet_ouvr TYPE1 pnt_virgul entier_pos corechet_ferm pnt_virgul
+
+INSTRUCTIONS : idf AFFECTATION_NOR | idf AFFECTATION_TAB | INPUT | OUTPUT | CONDITION | LOOPDO | LOOPFOR 
+
+AFFECTATION_TAB : corechet_ouvr entier_pos corechet_ferm AFFECTATION_NOR
+
+AFFECTATION_NOR : affect VALEUR | affect EXPRESION 
+
+EXPRESION : 
+
+INPUT : input parenthese_ouvrante idf parenthese_fermante pnt_virgul
+
+OUTPUT : output parenthese_ouvrante DANS_OUTPUT parenthese_fermante pnt_virgul 
+
+DANS_OUTPUT: chaine | idf | chaine virgul DANS_OUTPUT | idf vergule DANS_OUTPUT
+
+CONDITION : if parenthese_ouvrante EXPRESSION_COND parenthese_fermante then accolade_ouvr ---------------- SINON
+
+SINON : accolade_ferm | 
+
+EXPRESSION_COND : 
+
+LOOPDO : 
+
+LOOPFOR :
 
 
 %%
