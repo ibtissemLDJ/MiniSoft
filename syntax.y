@@ -5,6 +5,16 @@
 
 %token  MainPrgm idf pnt_virgul var BeginPg accolade_ouvr accolade_ferm EndPg let deux_pnts const egal virgul float int entier_pos corechet_ouvr corechet_ferm entier_neg float_pos float_neg affect chaine if then parenthese_fermante parenthese_ouvrante input output add soustract div multipl inf sup inf_ou_egal sup_ou_egal neg and or diff for from to step do while comment_une comment_plsr else reel_pos reel_neg identiq 
 
+%left or 
+%left and 
+%left neg 
+%left inf sup sup_ou_egal inf_ou_egal identiq diff 
+%left add soustract 
+%left multipl div 
+
+
+
+
 %start DEBUT
  
 
@@ -30,7 +40,7 @@ AFFECTATION_TAB : corechet_ouvr entier_pos corechet_ferm AFFECTATION_NOR ;
 AFFECTATION_NOR : affect EXPRESSION pnt_virgul ;
 
 
-EXPRESSION :  parenthese_ouvrante EXPRESSION parenthese_fermante | EXPRESSION OPERATEUR_ARITHM EXPRESSON | OPERAND | VALEUR ;
+EXPRESSION :  parenthese_ouvrante EXPRESSION parenthese_fermante | EXPRESSION OPERATEUR_ARITHM EXPRESSION | OPERAND | VALEUR ;
 
 OPERAND : idf | VALEUR | neg OPERAND ;
 
@@ -42,7 +52,7 @@ OUTPUT : output parenthese_ouvrante DANS_OUTPUT parenthese_fermante pnt_virgul ;
 
 DANS_OUTPUT: chaine | idf | chaine virgul DANS_OUTPUT | idf virgul DANS_OUTPUT ;
 
-CONDITION : if parenthese_ouvrante EXPRESSION_COND parenthese_fermante then accolade_ouvr INSTRUCTIONS accolade_fermante SINON ; 
+CONDITION : if parenthese_ouvrante EXPRESSION_COND parenthese_fermante then accolade_ouvr INSTRUCTIONS accolade_ferm SINON ; 
 
 SINON : else accolade_ouvr INSTRUCTIONS accolade_ferm |  ;
 
