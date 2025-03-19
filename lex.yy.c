@@ -286,21 +286,21 @@ static void yy_fatal_error YY_PROTO(( yyconst char msg[] ));
 #define YY_END_OF_BUFFER 57
 static yyconst short int yy_accept[151] =
     {   0,
-        0,    0,   57,   55,   54,    1,   32,   45,   36,   37,
-       42,   41,   35,   40,   55,   43,   23,   23,   34,   33,
-       48,   55,   49,   55,   27,   27,   27,   27,   27,   27,
-       27,   46,   47,   27,   27,   27,   27,   27,   27,   27,
-       27,   27,   38,   39,   53,    0,   24,    0,    0,    0,
-        0,   30,    0,   28,   28,   44,    0,   51,   52,   50,
-        0,   27,    0,    0,   27,   27,   27,    8,   27,   12,
-       27,   27,   27,   27,    9,   27,   27,   27,   27,   27,
-       16,   27,    0,    0,   29,    0,    0,    0,    7,   27,
-       27,   27,   27,    3,   27,   27,   14,   27,   27,   18,
+        0,    0,   57,   55,   54,    1,   31,   44,   35,   36,
+       41,   40,   34,   39,   55,   42,   27,   27,   33,   32,
+       48,   47,   49,   55,   26,   26,   26,   26,   26,   26,
+       26,   45,   46,   26,   26,   26,   26,   26,   26,   26,
+       26,   26,   37,   38,   53,    0,   23,    0,    0,    0,
+        0,   29,    0,   27,   27,   43,    0,   51,   52,   50,
+        0,   26,    0,    0,   26,   26,   26,    8,   26,   12,
+       26,   26,   26,   26,    9,   26,   26,   26,   26,   26,
+       16,   26,    0,    0,   28,    0,    0,    0,    7,   26,
+       26,   26,   26,    3,   26,   26,   14,   26,   26,   18,
 
-        6,   27,   27,   27,   27,    0,   31,    0,    0,    0,
-       27,    0,   27,   17,   27,   15,   27,   27,   11,   10,
-       27,    0,    0,    0,    0,   27,    5,    0,   19,   20,
-       27,   13,    0,   25,    0,    0,    0,   21,   26,    0,
+        6,   26,   26,   26,   26,    0,   30,    0,    0,    0,
+       26,    0,   26,   17,   26,   15,   26,   26,   11,   10,
+       26,    0,    0,    0,    0,   26,    5,    0,   19,   20,
+       26,   13,    0,   24,    0,    0,    0,   21,   25,    0,
         4,    0,    0,    2,    0,    0,    0,    0,   22,    0
     } ;
 
@@ -499,13 +499,14 @@ static char *yy_last_accepting_cpos;
 char *yytext;
 #line 1 "lexic.l"
 #define INITIAL 0
-#line 3 "lexic.l"
+#line 2 "lexic.l"
 
 #include<stdio.h>
 #include<string.h>
+# include "syntax.tab.h"
 int num_de_lignes = 1 ;
 
-#line 509 "lex.yy.c"
+#line 510 "lex.yy.c"
 
 /* Macros after this point can all be overridden by user definitions in
  * section 1.
@@ -659,7 +660,7 @@ YY_DECL
 #line 23 "lexic.l"
 
 
-#line 663 "lex.yy.c"
+#line 664 "lex.yy.c"
 
 	if ( yy_init )
 		{
@@ -745,133 +746,130 @@ do_action:	/* This label is used only to access EOF actions. */
 case 1:
 YY_RULE_SETUP
 #line 25 "lexic.l"
-{num_de_lignes++ ;  printf("le nombre de linge : %d \n",num_de_lignes);}
+{
+    num_de_lignes++ ; 
+    printf("le nombre de linge : %d \n",num_de_lignes);
+    }
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 27 "lexic.l"
-{printf("mot cle : %s \n",yytext);}
+#line 30 "lexic.l"
+{printf("mot cle : %s \n",yytext); return MainPrgm ;}
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 28 "lexic.l"
-{printf("mot cle : %s \n",yytext);}
+#line 31 "lexic.l"
+{printf("mot cle : %s \n",yytext); return var;}
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 29 "lexic.l"
-{printf("mot cle : %s \n",yytext);}
+#line 32 "lexic.l"
+{printf("mot cle : %s \n",yytext); return BeginPg ;}
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 30 "lexic.l"
-{printf("mot cle : %s \n",yytext);}
+#line 33 "lexic.l"
+{printf("mot cle : %s \n",yytext); return EndPg ;}
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 31 "lexic.l"
-{printf("mot cle : %s \n",yytext);}
+#line 34 "lexic.l"
+{printf("mot cle : %s \n",yytext); return let ;}
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 32 "lexic.l"
-{printf("operateur : %s \n",yytext);}
+#line 35 "lexic.l"
+{printf("operateur : %s \n",yytext); return and ;}
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 33 "lexic.l"
-{printf("operateur : %s \n",yytext);}
+#line 36 "lexic.l"
+{printf("operateur : %s \n",yytext); return or ;}
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 34 "lexic.l"
-{printf("mot cle : %s \n",yytext);}
+#line 37 "lexic.l"
+{printf("mot cle : %s \n",yytext); return if_cond ;}
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 35 "lexic.l"
-{printf("mot cle : %s \n",yytext);}
+#line 38 "lexic.l"
+{printf("mot cle : %s \n",yytext); return then ;}
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 36 "lexic.l"
-{printf("mot cle : %s \n",yytext);}
+#line 39 "lexic.l"
+{printf("mot cle : %s \n",yytext); return step ;}
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 37 "lexic.l"
-{printf("mot cle : %s \n",yytext);}
+#line 40 "lexic.l"
+{printf("mot cle : %s \n",yytext); return boucle_do ;}
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 38 "lexic.l"
-{printf("mot cle : %s \n",yytext);}
+#line 41 "lexic.l"
+{printf("mot cle : %s \n",yytext); return boucle_while ;}
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 39 "lexic.l"
-{printf("mot cle : %s \n",yytext);}
+#line 42 "lexic.l"
+{printf("mot cle : %s \n",yytext); return boucle_for ;}
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 40 "lexic.l"
-{printf("mot cle : %s \n",yytext);}
+#line 43 "lexic.l"
+{printf("mot cle : %s \n",yytext); return from ;}
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 41 "lexic.l"
-{printf("mot cle : %s \n",yytext);}
+#line 44 "lexic.l"
+{printf("mot cle : %s \n",yytext); return to ;}
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 42 "lexic.l"
-{printf("mot cle : %s \n",yytext);}
+#line 45 "lexic.l"
+{printf("mot cle : %s \n",yytext); return else_cond ;}
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 43 "lexic.l"
-{printf("mot cle : %s \n",yytext);}
+#line 46 "lexic.l"
+{printf("mot cle : %s \n",yytext); return entier ;}
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 44 "lexic.l"
-{printf("mot cle : %s \n",yytext);}
+#line 47 "lexic.l"
+{printf("mot cle : %s \n",yytext); return reel ;}
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 45 "lexic.l"
-{printf("mot cle : %s \n",yytext);}
+#line 48 "lexic.l"
+{printf("mot cle : %s \n",yytext); return lire ;}
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 46 "lexic.l"
-{printf("mot cle : %s \n",yytext);}
+#line 49 "lexic.l"
+{printf("mot cle : %s \n",yytext); return output ;}
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 47 "lexic.l"
-{printf("declaration const \n");}
+#line 50 "lexic.l"
+{printf("declaration const \n"); return constante ;}
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 50 "lexic.l"
-{printf("chiffre \n");
-}
+#line 53 "lexic.l"
+{printf("chain de car: %s \n",yytext); return chaine ;}
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 52 "lexic.l"
-{printf("chain de car: %s \n",yytext);}
+#line 54 "lexic.l"
+{printf("un commentaire une ligne \n"); return comment_une ;}
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 53 "lexic.l"
-{printf("un commentaire une ligne \n");}
-	YY_BREAK
-case 26:
-YY_RULE_SETUP
-#line 54 "lexic.l"
-{
+#line 55 "lexic.l"
+{ 
     printf("un commentaire plusieurs lignes \n");
     char *varchar = strdup(yytext);
     int j;  
@@ -880,186 +878,192 @@ YY_RULE_SETUP
             num_de_lignes++;
         }
     }
+    return comment_plsr ;
 }
 	YY_BREAK
-case 27:
+case 26:
 YY_RULE_SETUP
-#line 64 "lexic.l"
+#line 66 "lexic.l"
 { if (yyleng > 14) 
-    {printf ("erreur lexicale : le IDF depasse 14 caracteres \n");}
+    {printf ("erreur lexicale : le IDF depasse 14 caracteres \n"); return idf ;}
     else{
     printf("idf : %s \n",yytext);}
 } 
 	YY_BREAK
-case 28:
-YY_RULE_SETUP
-#line 69 "lexic.l"
-{ printf("entier positif\n"); }
-	YY_BREAK
-case 29:
+case 27:
 YY_RULE_SETUP
 #line 71 "lexic.l"
+{ printf("entier positif\n"); return entier_pos ;}
+	YY_BREAK
+case 28:
+YY_RULE_SETUP
+#line 73 "lexic.l"
 {
         char *varstr=strdup(yytext+1);
         varstr[strlen(varstr)-1]='\0';
         int valeur= atoi(varstr);
-          if (valeur >= -32768 && valeur <= 32767) {
+            if (valeur >= -32768 && valeur <= 32767) {
         if (valeur < 0) {
-            printf("entier signe negatif \n"); 
+            printf("entier signe negatif \n");  return entier_neg ;
         } else {
-            printf("entier  signe positif \n"); 
+            printf("entier  signe positif \n"); return entier_neg ;
         }
     } else {
         printf("erreur : le nombre n'est pas dans la plage des valeurs\n");
     }
 }
 	YY_BREAK
+case 29:
+YY_RULE_SETUP
+#line 89 "lexic.l"
+{ printf("reel non signe positif\n"); return reel_pos ;}
+	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 87 "lexic.l"
-{ printf("reel non signe positif\n"); }
-	YY_BREAK
-case 31:
-YY_RULE_SETUP
-#line 88 "lexic.l"
+#line 90 "lexic.l"
 {
         char *varstr = strdup(yytext+ 1); 
         varstr[strlen(varstr) - 1] = '\0';
         double valeur = strtod(varstr, NULL);
 
         if (valeur < 0) {
-            printf("reel signe negatif\n"); 
+            printf("reel signe negatif\n"); return reel_neg ; 
         } else {
-            printf("reel signe positif \n"); 
+            printf("reel signe positif \n");  return reel_pos ;
         }
 }
 	YY_BREAK
+case 31:
+YY_RULE_SETUP
+#line 102 "lexic.l"
+{printf("operateur : negation \n" ); return neg ;}
+	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 100 "lexic.l"
-{printf("operateur : negation \n" );}
+#line 103 "lexic.l"
+{printf("pvg\n"); return pnt_virgul ;}
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 101 "lexic.l"
-{printf("pvg\n");}
+#line 104 "lexic.l"
+{printf("deux points \n"); return deux_pnts ;}
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
-#line 102 "lexic.l"
-{printf("deux points \n");}
+#line 105 "lexic.l"
+{printf("le vergule \n"); return virgul ;}
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 103 "lexic.l"
-{printf("le vergule \n");}
+#line 106 "lexic.l"
+{printf("parenthese_ouvrante \n"); return parenthese_ouvr ;}
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
-#line 104 "lexic.l"
-{printf("parenthese_ouvrante \n");}
+#line 107 "lexic.l"
+{printf("parenthese_fermante \n"); return parenthese_ferm ;}  
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
-#line 105 "lexic.l"
-{printf("parenthese_fermante \n");}  
+#line 108 "lexic.l"
+{printf("accolade_ouvrante \n"); return accolade_ouvr ;}
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
-#line 106 "lexic.l"
-{printf("accolade_ouvrante \n");}
+#line 109 "lexic.l"
+{printf("accolade_fermante \n"); return accolade_ferm ;}
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
-#line 107 "lexic.l"
-{printf("accolade_fermante \n");}
+#line 110 "lexic.l"
+{printf("soustract \n"); return soustract ;}
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
-#line 108 "lexic.l"
-{printf("soustract \n");}
+#line 111 "lexic.l"
+{printf("addition \n"); return add ;}
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
-#line 109 "lexic.l"
-{printf("addition \n");}
+#line 112 "lexic.l"
+{printf("multiplication \n"); return multipl ;}
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
-#line 110 "lexic.l"
-{printf("multiplication \n");}
+#line 113 "lexic.l"
+{printf("division \n"); return division ;}
 	YY_BREAK
 case 43:
 YY_RULE_SETUP
-#line 111 "lexic.l"
-{printf("division \n");}
+#line 114 "lexic.l"
+{printf("affectation \n"); return affect ;}
 	YY_BREAK
 case 44:
 YY_RULE_SETUP
-#line 112 "lexic.l"
-{printf("affectation \n");}
+#line 115 "lexic.l"
+{printf("Guillemets \n"); }
 	YY_BREAK
 case 45:
 YY_RULE_SETUP
-#line 113 "lexic.l"
-{printf("Guillemets \n");}
+#line 116 "lexic.l"
+{printf("corechets ouvrante \n"); return corechet_ouvr ;}
 	YY_BREAK
 case 46:
 YY_RULE_SETUP
-#line 114 "lexic.l"
-{printf("corechets ouvrante \n");}
+#line 117 "lexic.l"
+{printf("corechets fermente \n"); return corechet_ferm ;}
 	YY_BREAK
 case 47:
 YY_RULE_SETUP
-#line 115 "lexic.l"
-{printf("corechets fermente \n");}
+#line 118 "lexic.l"
+{ printf("egale\n"); return egal ;}
 	YY_BREAK
 case 48:
 YY_RULE_SETUP
-#line 117 "lexic.l"
-{printf("inferieur \n");}
+#line 120 "lexic.l"
+{printf("inferieur \n"); return inf ;}
 	YY_BREAK
 case 49:
 YY_RULE_SETUP
-#line 118 "lexic.l"
-{printf("superieur \n");}
+#line 121 "lexic.l"
+{printf("superieur \n"); return sup ;}
 	YY_BREAK
 case 50:
 YY_RULE_SETUP
-#line 119 "lexic.l"
-{printf("superieur_ou_egale \n");}
+#line 122 "lexic.l"
+{printf("superieur_ou_egale \n"); return sup_ou_egal ;}
 	YY_BREAK
 case 51:
 YY_RULE_SETUP
-#line 120 "lexic.l"
-{printf("inferieur_ou_egae \n");}
+#line 123 "lexic.l"
+{printf("inferieur_ou_egae \n"); return inf_ou_egal ;}
 	YY_BREAK
 case 52:
 YY_RULE_SETUP
-#line 121 "lexic.l"
-{printf("egale \n");}
+#line 124 "lexic.l"
+{printf("egale \n"); return identiq ;}
 	YY_BREAK
 case 53:
 YY_RULE_SETUP
-#line 122 "lexic.l"
-{printf("different_de \n");}
+#line 125 "lexic.l"
+{printf("different_de \n"); return diff ;}
 	YY_BREAK
 case 54:
 YY_RULE_SETUP
-#line 125 "lexic.l"
+#line 127 "lexic.l"
 {printf("espace \n");}
 	YY_BREAK
 case 55:
 YY_RULE_SETUP
-#line 130 "lexic.l"
+#line 131 "lexic.l"
 {printf("erreur lexicale a la ligne %d \n", num_de_lignes);} 
 	YY_BREAK
 case 56:
 YY_RULE_SETUP
-#line 132 "lexic.l"
+#line 133 "lexic.l"
 ECHO;
 	YY_BREAK
-#line 1063 "lex.yy.c"
+#line 1067 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1945,7 +1949,7 @@ int main()
 	return 0;
 	}
 #endif
-#line 132 "lexic.l"
+#line 133 "lexic.l"
 
 int main(){
     yylex();

@@ -1,6 +1,3 @@
-
-
-
 %{
 
 #include<stdio.h>
@@ -28,7 +25,7 @@ reel_signer "("[-+]?([1-9]*|0)(".")([0-9]+)")"
 \n {
     num_de_lignes++ ; 
     printf("le nombre de linge : %d \n",num_de_lignes);
- }
+    }
 
 MainPrgm {printf("mot cle : %s \n",yytext); return MainPrgm ;}
 Var {printf("mot cle : %s \n",yytext); return var;}
@@ -37,25 +34,25 @@ EndPg {printf("mot cle : %s \n",yytext); return EndPg ;}
 let {printf("mot cle : %s \n",yytext); return let ;}
 AND {printf("operateur : %s \n",yytext); return and ;}
 OR {printf("operateur : %s \n",yytext); return or ;}
-if {printf("mot cle : %s \n",yytext); return if ;}
+if {printf("mot cle : %s \n",yytext); return if_cond ;}
 then {printf("mot cle : %s \n",yytext); return then ;}
 step {printf("mot cle : %s \n",yytext); return step ;}
-do {printf("mot cle : %s \n",yytext); return do ;}
-while {printf("mot cle : %s \n",yytext); return while ;}
-for {printf("mot cle : %s \n",yytext); return for ;}
+do {printf("mot cle : %s \n",yytext); return boucle_do ;}
+while {printf("mot cle : %s \n",yytext); return boucle_while ;}
+for {printf("mot cle : %s \n",yytext); return boucle_for ;}
 from {printf("mot cle : %s \n",yytext); return from ;}
 to {printf("mot cle : %s \n",yytext); return to ;}
-else {printf("mot cle : %s \n",yytext); return else ;}
-int {printf("mot cle : %s \n",yytext); return int ;}
-float {printf("mot cle : %s \n",yytext); return float ;}
-input {printf("mot cle : %s \n",yytext); return input ;}
+else {printf("mot cle : %s \n",yytext); return else_cond ;}
+int {printf("mot cle : %s \n",yytext); return entier ;}
+float {printf("mot cle : %s \n",yytext); return reel ;}
+input {printf("mot cle : %s \n",yytext); return lire ;}
 output {printf("mot cle : %s \n",yytext); return output ;}
-"@define const" {printf("declaration const \n"); return const}
+"@define const" {printf("declaration const \n"); return constante ;}
 
 
 {chaine} {printf("chain de car: %s \n",yytext); return chaine ;}
 {commentaire_une_ligne} {printf("un commentaire une ligne \n"); return comment_une ;}
-{commentaire_plusieurs_lignes} { return comment_plsr ;
+{commentaire_plusieurs_lignes} { 
     printf("un commentaire plusieurs lignes \n");
     char *varchar = strdup(yytext);
     int j;  
@@ -64,19 +61,20 @@ output {printf("mot cle : %s \n",yytext); return output ;}
             num_de_lignes++;
         }
     }
+    return comment_plsr ;
 }
 {idf} { if (yyleng > 14) 
     {printf ("erreur lexicale : le IDF depasse 14 caracteres \n"); return idf ;}
     else{
     printf("idf : %s \n",yytext);}
 } 
-{entier_non_signer} { printf("entier positif\n"); return entier_pos}
+{entier_non_signer} { printf("entier positif\n"); return entier_pos ;}
 
 {entier_signer} {
         char *varstr=strdup(yytext+1);
         varstr[strlen(varstr)-1]='\0';
         int valeur= atoi(varstr);
-          if (valeur >= -32768 && valeur <= 32767) {
+            if (valeur >= -32768 && valeur <= 32767) {
         if (valeur < 0) {
             printf("entier signe negatif \n");  return entier_neg ;
         } else {
@@ -112,7 +110,7 @@ output {printf("mot cle : %s \n",yytext); return output ;}
 "-" {printf("soustract \n"); return soustract ;}
 "+" {printf("addition \n"); return add ;}
 "*" {printf("multiplication \n"); return multipl ;}
-"/" {printf("division \n"); return div ;}
+"/" {printf("division \n"); return division ;}
 ":=" {printf("affectation \n"); return affect ;}
 \"  {printf("Guillemets \n"); }
 "[" {printf("corechets ouvrante \n"); return corechet_ouvr ;}
