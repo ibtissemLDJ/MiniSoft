@@ -1,10 +1,12 @@
 %{
 #include<stdio.h>
+#include "fonction.h"
+#include "TS.h"
 extern int num_de_lignes;
 
 %}
 
-%token  MainPrgm idf pnt_virgul var BeginPg accolade_ouvr accolade_ferm EndPg let deux_pnts constante egal virgul reel entier entier_pos corechet_ouvr corechet_ferm entier_neg float_pos float_neg affect chaine if_cond then parenthese_ferm parenthese_ouvr lire output add soustract division multipl inf sup inf_ou_egal sup_ou_egal neg and or diff boucle_for from to step boucle_do boucle_while comment_une comment_plsr else_cond reel_pos reel_neg identiq   
+%token  MainPrgm idf pnt_virgul var BeginPg accolade_ouvr accolade_ferm EndPg let deux_pnts constante egal virgul reel entier entier_pos corechet_ouvr corechet_ferm entier_neg float_pos float_neg affect chaine if_cond then parenthese_ferm parenthese_ouvr lire output add soustract division multipl inf sup inf_ou_egal sup_ou_egal neg and or diff boucle_for from to step boucle_do boucle_while comment_une comment_plsr else_cond reel_pos reel_neg identiq Guillemets 
 
 %start DEBUT
 
@@ -63,8 +65,9 @@ LOOP_FOR : boucle_for idf from entier_pos to entier_pos step entier_pos accolade
 
 %%
 int main() {
+    initialization();
     yyparse();
-
+    afficher();
 }
 yywrap()
 {}
