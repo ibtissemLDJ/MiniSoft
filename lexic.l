@@ -4,7 +4,7 @@
 #include<string.h>
 # include "syntax.tab.h"
 #include "fonction.h"
-#include "TS.h"
+
 extern YYSTYPE yylval;
 int num_de_lignes = 1 ;
 
@@ -54,7 +54,7 @@ output {printf("mot cle : %s \n",yytext); recherche(yytext, "MotCle", "", "", 2)
 "@define const" {printf("declaration const \n"); recherche(yytext, "CST", "", yytext, 1);   return constante ;}
 
 
-{chaine} {printf("chain de car: %s \n",yytext);  return chaine ;}
+{chaine} {printf("chain de car: %s \n",yytext);  yylval.str=strdup(yytext); return chaine ;}
 {commentaire_une_ligne} {printf("un commentaire une ligne \n"); return comment_une ;}
 {commentaire_plusieurs_lignes} { 
     printf("un commentaire plusieurs lignes \n");
@@ -71,10 +71,10 @@ output {printf("mot cle : %s \n",yytext); recherche(yytext, "MotCle", "", "", 2)
     {printf ("erreur lexicale : le IDF depasse 14 caracteres \n"); }
     else{
     printf("idf : %s \n",yytext);
-    recherche(yytext, "IDF", "", "", 1); 
+    yylval.str=strdup(yytext);
     return idf ;}
 } 
-{entier_non_signer} { printf("entier positif\n"); return entier_pos ;}
+{entier_non_signer} { printf("entier positif\n"); yylval.entier=atoi(yytext); return entier_pos ;}
 
 {entier_signer} {
         char *varstr=strdup(yytext+1);
@@ -82,9 +82,9 @@ output {printf("mot cle : %s \n",yytext); recherche(yytext, "MotCle", "", "", 2)
         int valeur= atoi(varstr);
             if (valeur >= -32768 && valeur <= 32767) {
         if (valeur < 0) {
-            printf("entier signe negatif \n");  return entier_neg ;
+            printf("entier signe negatif \n"); yylval.entier=atoi(yytext); return entier_neg ;
         } else {
-            printf("entier  signe positif \n"); return entier_neg ;
+            printf("entier  signe positif \n"); yylval.entier=atoi(yytext); return entier_neg ;
         }
     } else {
         printf("erreur : le nombre n'est pas dans la plage des valeurs\n");
@@ -92,16 +92,16 @@ output {printf("mot cle : %s \n",yytext); recherche(yytext, "MotCle", "", "", 2)
 }
 
 
-{reel_non_signer} { printf("reel non signe positif\n"); return reel_pos ;}
+{reel_non_signer} { printf("reel non signe positif\n"); yylval.reel=atof(yytext); return reel_pos ;}
 {reel_signer} {
         char *varstr = strdup(yytext+ 1); 
         varstr[strlen(varstr) - 1] = '\0';
         double valeur = strtod(varstr, NULL);
 
         if (valeur < 0) {
-            printf("reel signe negatif\n"); return reel_neg ; 
+            printf("reel signe negatif\n"); yylval.reel=atof(yytext); return reel_neg ; 
         } else {
-            printf("reel signe positif \n");  return reel_pos ;
+            printf("reel signe positif \n"); yylval.reel=atof(yytext); return reel_pos ;
         }
 }
 

@@ -3,7 +3,7 @@ typedef struct {
     char name[20];
     char code[20];
     char type[20];
-    char val [20];
+    char  val[20];
 }TS_IDF ;
 
 typedef struct

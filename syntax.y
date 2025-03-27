@@ -1,12 +1,18 @@
 %{
 #include<stdio.h>
 #include "fonction.h"
-#include "TS.h"
+
 extern int num_de_lignes;
-
+int nb_ligne=1;
+int col=1;
+void yyerror(char *msg);
 %}
-
-%token  MainPrgm idf pnt_virgul var BeginPg accolade_ouvr accolade_ferm EndPg let deux_pnts constante egal virgul reel entier entier_pos corechet_ouvr corechet_ferm entier_neg float_pos float_neg affect chaine if_cond then parenthese_ferm parenthese_ouvr lire output add soustract division multipl inf sup inf_ou_egal sup_ou_egal neg and or diff boucle_for from to step boucle_do boucle_while comment_une comment_plsr else_cond reel_pos reel_neg identiq Guillemets 
+%union {
+int entier;
+char* str;
+float reel;
+}
+%token MainPrgm <str>idf pnt_virgul var BeginPg accolade_ouvr accolade_ferm EndPg let deux_pnts constante egal virgul reel entier <entier>entier_pos corechet_ouvr corechet_ferm <entier>entier_neg <reel>reel_pos <reel>reel_neg affect <str>chaine if_cond then parenthese_ferm parenthese_ouvr lire output add soustract division multipl inf sup inf_ou_egal sup_ou_egal neg and or diff boucle_for from to step boucle_do boucle_while comment_une comment_plsr else_cond  identiq Guillemets 
 
 %start DEBUT
 
@@ -19,11 +25,12 @@ extern int num_de_lignes;
  
 
 %%
-DEBUT : MainPrgm idf pnt_virgul var DECLARATION BeginPg accolade_ouvr INSTRUCTIONS accolade_ferm EndPg pnt_virgul;
+DEBUT : MainPrgm idf pnt_virgul var DECLARATION BeginPg accolade_ouvr INSTRUCTIONS accolade_ferm EndPg pnt_virgul
+{ Rechercher($2, "IDF", "", "", 1);
+  printf ("Programme syntaxiquement correcte . \n"); YYACCEPT;};
+DECLARATION : let VARIABLE1 deux_pnts TYPE1 pnt_virgul | let idf deux_pnts TYPE2 pnt_virgul{Rechercher($2, "IDF", "", "", 1);} | constante idf deux_pnts TYPE1 egal VALEUR ;
 
-DECLARATION : let VARIABLE1 deux_pnts TYPE1 pnt_virgul | let idf deux_pnts TYPE2 pnt_virgul | constante idf deux_pnts TYPE1 egal VALEUR ;
-
-VALEUR: entier_pos | entier_neg | float_pos | float_neg  ;
+VALEUR: entier_pos | entier_neg | reel_pos | reel_neg  ;
 
 VARIABLE1: idf virgul VARIABLE1 | idf ;
 
@@ -31,7 +38,7 @@ TYPE1 : reel | entier ;
 
 TYPE2 : corechet_ouvr TYPE1 pnt_virgul entier_pos corechet_ferm pnt_virgul ;
 
-INSTRUCTIONS :  | idf AFFECTATION_NOR INSTRUCTIONS | idf AFFECTATION_TAB INSTRUCTIONS | INPUT INSTRUCTIONS | OUTPUT INSTRUCTIONS | CONDITION INSTRUCTIONS | LOOP_DO INSTRUCTIONS | LOOP_FOR INSTRUCTIONS ;
+INSTRUCTIONS :  | idf AFFECTATION_NOR INSTRUCTIONS {if (rechercher_idf($1)==0){printf("Erreur semantique: %s non declare a la ligne %d\n",$1,nb_ligne);}}| idf AFFECTATION_TAB INSTRUCTIONS | INPUT INSTRUCTIONS | OUTPUT INSTRUCTIONS | CONDITION INSTRUCTIONS | LOOP_DO INSTRUCTIONS | LOOP_FOR INSTRUCTIONS ;
 
 AFFECTATION_TAB : corechet_ouvr entier_pos corechet_ferm AFFECTATION_NOR ;
 

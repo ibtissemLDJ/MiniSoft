@@ -58,8 +58,8 @@
      corechet_ouvr = 274,
      corechet_ferm = 275,
      entier_neg = 276,
-     float_pos = 277,
-     float_neg = 278,
+     reel_pos = 277,
+     reel_neg = 278,
      affect = 279,
      chaine = 280,
      if_cond = 281,
@@ -89,16 +89,29 @@
      comment_une = 305,
      comment_plsr = 306,
      else_cond = 307,
-     reel_pos = 308,
-     reel_neg = 309,
-     identiq = 310
+     identiq = 308,
+     Guillemets = 309
    };
 #endif
 
 
 
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
-typedef int YYSTYPE;
+typedef union YYSTYPE
+{
+
+/* Line 1676 of yacc.c  */
+#line 8 "syntax.y"
+
+int entier;
+char* str;
+float reel;
+
+
+
+/* Line 1676 of yacc.c  */
+#line 114 "syntax.tab.h"
+} YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1

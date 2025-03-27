@@ -1,7 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <TS.h>
+#include  "TS.h"
 #include <string.h>
+
 //------------------------------------------------------------------------------------------------//
 void initialization(){
     int i;
@@ -84,7 +85,7 @@ void afficher() {
     printf("---\n");
 
     for (i = 0; i < 200; i++) {
-        if (TIDF[i].state == i) {
+        if (TIDF[i].state == 1) {
             printf("\t|%10s |%15s | %12s | %12s \n", TIDF[i].name, TIDF[i].code, TIDF[i].type, TIDF[i].val);
         }
     }
@@ -96,7 +97,7 @@ void afficher() {
     printf("---\n");
 
     for (i = 0; i < 50; i++) {
-        if (TSM[i].state == i) {
+        if (TSM[i].state == 1) {
             printf("\t|%10s |%12s | \n", TSM[i].nomEntite, TSM[i].Code);
         }
     }
@@ -108,8 +109,21 @@ void afficher() {
     printf("---\n");
 
     for (i = 0; i < 50; i++) {
-        if (TSS[i].state == i) {
+        if (TSS[i].state == 1 ) {
             printf("\t|%10s |%12s | \n", TSS[i].nomEntite, TSS[i].Code);
         }
     }
+}
+//------------------------------------------------------------------------------------------------//
+int rechercher_idf(char entite[]){
+    // cette fonction utiliser pour rechercher les idfs pour regler le prbllm idf nn declarer 
+    int i; 
+    for (i = 0; i < 200 && TIDF[i].state == 1 && strcmp(entite, TIDF[i].name) != 0; i++);
+        
+        if (i < 200 && strcmp(entite, TIDF[i].name) != 0) {
+            return 0;// si on a pas trouver l'idf 
+        } else {
+            return 1;// si on a  trouver l'idf
+        }
+    
 }
