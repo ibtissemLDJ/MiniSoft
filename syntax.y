@@ -12,7 +12,7 @@ int entier;
 char* str;
 float reel;
 }
-%token MainPrgm <str>idf pnt_virgul var BeginPg accolade_ouvr accolade_ferm EndPg let deux_pnts constante egal virgul reel entier <entier>entier_pos corechet_ouvr corechet_ferm <entier>entier_neg <reel>reel_pos <reel>reel_neg affect <str>chaine if_cond then parenthese_ferm parenthese_ouvr lire output add soustract division multipl inf sup inf_ou_egal sup_ou_egal neg and or diff boucle_for from to step boucle_do boucle_while comment_une comment_plsr else_cond  identiq Guillemets 
+%token MainPrgm <str>idf pnt_virgul var BeginPg accolade_ouvr accolade_ferm EndPg let deux_pnts constante egal virgul reel entier <entier>entier_pos corechet_ouvr corechet_ferm <entier>entier_neg <reel>reel_pos <reel>reel_neg affect <str>chaine if_cond then parenthese_ferm parenthese_ouvr lire output add soustract division multipl inf sup inf_ou_egal sup_ou_egal neg and or diff boucle_for from to step boucle_do boucle_while else_cond  identiq Guillemets 
 
 %start DEBUT
 
@@ -25,14 +25,28 @@ float reel;
  
 
 %%
-DEBUT : MainPrgm idf pnt_virgul var DECLARATION BeginPg accolade_ouvr INSTRUCTIONS accolade_ferm EndPg pnt_virgul
-{ Rechercher($2, "IDF", "", "", 1);
-  printf ("Programme syntaxiquement correcte . \n"); YYACCEPT;};
-DECLARATION : let VARIABLE1 deux_pnts TYPE1 pnt_virgul | let idf deux_pnts TYPE2 pnt_virgul{Rechercher($2, "IDF", "", "", 1);} | constante idf deux_pnts TYPE1 egal VALEUR ;
+DEBUT : MainPrgm idf pnt_virgul 
+         var DECLARATION_LIST 
+         BeginPg accolade_ouvr 
+         INSTRUCTIONS 
+         accolade_ferm EndPg pnt_virgul{ Rechercher($2, "IDF", "", "", 1);
+  printf ("Programme syntaxiquement correcte . \n"); YYACCEPT;
+} ;
+
+
+DECLARATION_LIST :
+      DECLARATION_LIST DECLARATION
+    | DECLARATION
+    ;
+
+DECLARATION :
+      let VARIABLE deux_pnts TYPE1 pnt_virgul 
+      | let idf deux_pnts TYPE2 pnt_virgul 
+      | constante idf deux_pnts TYPE1 egal VALEUR  ;
 
 VALEUR: entier_pos | entier_neg | reel_pos | reel_neg  ;
 
-VARIABLE1: idf virgul VARIABLE1 | idf ;
+VARIABLE: idf virgul VARIABLE | idf ;
 
 TYPE1 : reel | entier ;
 
@@ -44,11 +58,28 @@ AFFECTATION_TAB : corechet_ouvr entier_pos corechet_ferm AFFECTATION_NOR ;
 
 AFFECTATION_NOR : affect EXPRESSION pnt_virgul ;
 
-EXPRESSION :  parenthese_ouvr EXPRESSION parenthese_ferm | EXPRESSION OPERATEUR_ARITHM EXPRESSION | OPERAND | VALEUR ;
+EXPRESSION : EXPRESSION_ADD ;
 
-OPERAND : idf | VALEUR | neg OPERAND ;
+EXPRESSION_ADD :
+      EXPRESSION_ADD add EXPRESSION_MULT  
+    | EXPRESSION_ADD soustract EXPRESSION_MULT  
+    | EXPRESSION_MULT ;
 
-OPERATEUR_ARITHM : add | soustract | division | multipl ;
+EXPRESSION_MULT :
+      EXPRESSION_MULT multipl EXPRESSION_UNARY  
+    | EXPRESSION_MULT division EXPRESSION_UNARY  
+    | EXPRESSION_UNARY ;
+
+EXPRESSION_UNARY :
+      neg EXPRESSION_UNARY  
+    | EXPRESSION_ATOM ;
+
+EXPRESSION_ATOM :
+      parenthese_ouvr EXPRESSION parenthese_ferm  
+    | OPERAND  
+    | VALEUR ;
+
+OPERAND : idf | VALEUR ;
 
 INPUT : lire parenthese_ouvr idf parenthese_ferm pnt_virgul ;
 

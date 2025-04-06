@@ -55,7 +55,7 @@ output {printf("mot cle : %s \n",yytext); recherche(yytext, "MotCle", "", "", 2)
 
 
 {chaine} {printf("chain de car: %s \n",yytext);  yylval.str=strdup(yytext); return chaine ;}
-{commentaire_une_ligne} {printf("un commentaire une ligne \n"); return comment_une ;}
+{commentaire_une_ligne} {printf("un commentaire une ligne \n");}
 {commentaire_plusieurs_lignes} { 
     printf("un commentaire plusieurs lignes \n");
     char *varchar = strdup(yytext);
@@ -65,7 +65,7 @@ output {printf("mot cle : %s \n",yytext); recherche(yytext, "MotCle", "", "", 2)
             num_de_lignes++;
         }
     }
-    return comment_plsr ;
+    
 }
 {idf} { if (yyleng > 14) 
     {printf ("erreur lexicale : le IDF depasse 14 caracteres \n"); }
