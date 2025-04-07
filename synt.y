@@ -14,6 +14,7 @@ float reel;
 
 %token MainPrgm <str>idf pnt_virgul var BeginPg accolade_ouvr accolade_ferm EndPg let deux_pnts constante egal virgul <reel>reel <entier>entier <entier>entier_pos corechet_ouvr corechet_ferm <entier>entier_neg <reel>reel_pos <reel>reel_neg affect <str>chaine if_cond then parenthese_ferm parenthese_ouvr lire output add soustract division multipl inf sup inf_ou_egal sup_ou_egal neg and or diff boucle_for from to step boucle_do boucle_while else_cond identiq  
 
+
 %start DEBUT
 
 %nonassoc then
@@ -36,20 +37,19 @@ DEBUT : MainPrgm idf pnt_virgul
          accolade_ferm EndPg pnt_virgul {printf("correcte syntaxiquement");};
 
 DECLARATION_LIST :
-    |DECLARATION_LIST DECLARATION
-    | DECLARATION
-    ;
+    |DECLARATION_LIST DECLARATION;
 
 DECLARATION :
       let VARIABLE deux_pnts TYPE1 pnt_virgul 
-      | let idf deux_pnts TYPE2 pnt_virgul 
+      | let VARIABLE deux_pnts TYPE2 pnt_virgul
       | constante idf deux_pnts TYPE1 egal VALEUR pnt_virgul ;
 
 VALEUR: entier_pos | entier_neg | reel_pos | reel_neg  ;
 
-VARIABLE: idf virgul VARIABLE | idf ;
+VARIABLE: idf virgul VARIABLE 
+         | idf ;
 
-TYPE1 : reel | entier ;
+TYPE1 : reel   ;
 
 TYPE2 : corechet_ouvr TYPE1 pnt_virgul entier_pos corechet_ferm ;
 
@@ -113,13 +113,13 @@ LOOP_FOR : boucle_for idf from entier_pos to entier_pos step entier_pos accolade
 
 %%
 int main() {
-    
-    yyparse();
-    afficher();
+  yyparse();
+  afficher();
 }
-yywrap()
-{return 1;}
-int yyerror(char *msg)
-{  
-    printf(" Erreur syntaxique a la ligne %d la colonne %d lentite %s " , num_de_lignes , col,  yytext);}
+
+yywrap(){return 1;}
+
+int yyerror(char *msg){  
+ printf(" Erreur syntaxique a la ligne %d la colonne %d lentite %s " , num_de_lignes , col,  yytext); 
+}
     

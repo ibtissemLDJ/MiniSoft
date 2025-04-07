@@ -1,6 +1,6 @@
 MainPrgm j7 ;
 Var
-let gfh : int ;
+let x : float; 
 BeginPg
 {
 a := (-5) ;
