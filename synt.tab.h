@@ -87,8 +87,7 @@
      boucle_do = 303,
      boucle_while = 304,
      else_cond = 305,
-     identiq = 306,
-     Guillemets = 307
+     identiq = 306
    };
 #endif
 
@@ -99,7 +98,7 @@ typedef union YYSTYPE
 {
 
 /* Line 1676 of yacc.c  */
-#line 10 "syntax.y"
+#line 9 "synt.y"
 
 int entier;
 char* str;
@@ -108,7 +107,7 @@ float reel;
 
 
 /* Line 1676 of yacc.c  */
-#line 112 "syntax.tab.h"
+#line 111 "synt.tab.h"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
