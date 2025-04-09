@@ -3,7 +3,9 @@
 extern int num_de_lignes;
 extern int col;
 extern char *yytext; 
-
+char tabl_inter [100][20];
+int cpt= 0;
+char sauvtype [20];
 
 %}
 %union {
@@ -12,7 +14,7 @@ char* str;
 float reel;
 }
 
-%token MainPrgm <str>idf pnt_virgul var BeginPg accolade_ouvr accolade_ferm EndPg let deux_pnts constante egal virgul <reel>reel <entier>entier <entier>entier_pos corechet_ouvr corechet_ferm <entier>entier_neg <reel>reel_pos <reel>reel_neg affect <str>chaine if_cond then parenthese_ferm parenthese_ouvr lire output add soustract division multipl inf sup inf_ou_egal sup_ou_egal neg and or diff boucle_for from to step boucle_do boucle_while else_cond identiq  
+%token MainPrgm <str>idf pnt_virgul var BeginPg accolade_ouvr accolade_ferm EndPg let deux_pnts constante egal virgul <str>reel <str>entier <entier>entier_pos corechet_ouvr corechet_ferm <entier>entier_neg <reel>reel_pos <reel>reel_neg affect <str>chaine if_cond then parenthese_ferm parenthese_ouvr lire output add soustract division multipl inf sup inf_ou_egal sup_ou_egal neg and or diff boucle_for from to step boucle_do boucle_while else_cond identiq  
 
 
 %start DEBUT
@@ -40,18 +42,54 @@ DECLARATION_LIST :
     |DECLARATION_LIST DECLARATION;
 
 DECLARATION :
-      let VARIABLE deux_pnts TYPE1 pnt_virgul 
+      let VARIABLE deux_pnts TYPE1 pnt_virgul
+      {
+        int i ;
+        for (i = 0 ; i<cpt; i ++ ){
+          if (rechercheType(tabl_inter[i],0)==0){
+            printf("c");
+            insererType(tabl_inter[i],sauvtype);
+          }else{
+            printf("erreur semantique double declaration de : %s a la ligne %d",tabl_inter[i],num_de_lignes);
+          }
+        }
+        cpt =0 ; 
+      }
       | let VARIABLE deux_pnts TYPE2 pnt_virgul
-      | constante idf deux_pnts TYPE1 egal VALEUR pnt_virgul ;
+       {
+        int i ;
+        for (i = 0 ; i<cpt; i ++ ){
+          if (rechercheType(tabl_inter[i],0)==0){
+            printf("b");
+            insererType(tabl_inter[i],sauvtype);
+          }else{
+            printf("erreur semantique double declaration de : %s a la ligne %d",tabl_inter[i],num_de_lignes);
+          }
+        }
+        cpt =0 ; 
+      }
+      | constante idf deux_pnts TYPE1 egal VALEUR pnt_virgul
+       {
+        int i ;
+        for (i = 0 ; i<cpt; i ++ ){
+          if (rechercheType(tabl_inter[i],0)==0){
+            printf("a");
+            insererType(tabl_inter[i],sauvtype);
+          }else{
+            printf("erreur semantique double declaration de : %s a la ligne %d",tabl_inter[i],num_de_lignes);
+          }
+        }
+        cpt =0 ; 
+      } ;
 
 VALEUR: entier_pos | entier_neg | reel_pos | reel_neg  ;
 
-VARIABLE: idf virgul VARIABLE 
-         | idf ;
+VARIABLE: idf virgul VARIABLE { strcpy(tabl_inter[cpt], $1); cpt ++;}
+         | idf { strcpy(tabl_inter[cpt], $1); cpt ++;} ;
 
-TYPE1 : reel   ;
+TYPE1 : reel {strcpy(sauvtype,$1);} |entier {strcpy(sauvtype,$1);}  ;
 
-TYPE2 : corechet_ouvr TYPE1 pnt_virgul entier_pos corechet_ferm ;
+TYPE2 : corechet_ouvr TYPE1 pnt_virgul entier_pos corechet_ferm  ;
 
 INSTRUCTIONS :  | idf AFFECTATION_NOR INSTRUCTIONS | idf AFFECTATION_TAB INSTRUCTIONS | INPUT INSTRUCTIONS | OUTPUT INSTRUCTIONS | CONDITION INSTRUCTIONS | LOOP_DO INSTRUCTIONS | LOOP_FOR INSTRUCTIONS ;
 
