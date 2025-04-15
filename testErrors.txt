@@ -1,0 +1,31 @@
+MainPrgm Minisoft ;
+
+Var 
+let x : Int ;
+let x : Int ;                       <!- erreur double declaration -!>
+
+
+@define Const a ,b  : Int = 10 ;
+@define Const c : Float = 6.8 ;
+let A,B :[Int ; 10] ;
+
+BeginPg
+{
+  {-- Partie Instructions 
+  
+   --}
+x := (-5.8) ;                        <!- erreur non compatibilite de type -!>
+
+a := 2 ;                             <!- erreur changement de val de constante  -!>
+
+B [20] := 344 ;                      <!- erreur depassement de taille tableau -!>
+
+
+for i from 1 to 10 step 2 {          <!- erreur non declaration  -!>
+x := 1;
+}
+
+x := a /0 ;                          <!- erreur division par zero  -!>
+
+}
+EndPg ;
