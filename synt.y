@@ -1,6 +1,8 @@
 %{
 
 #include<stdio.h>
+#include <string.h>
+#include <stdlib.h>
 #include "synt.tab.h"  
 #include <string.h>
 extern int num_de_lignes;
@@ -14,6 +16,78 @@ char sauv [20];
 double sauvval; 
 int indicetab; 
 int indice; 
+
+
+#define MAX_QUADS 1000
+#define MAX_TEMP_VARS 100
+#define MAX_LABEL_LENGTH 20
+#define MAX_OPERAND_LENGTH 20
+
+typedef struct Quadruplet {
+    char operator[10];
+    char operand1[MAX_OPERAND_LENGTH];
+    char operand2[MAX_OPERAND_LENGTH];
+    char result[MAX_OPERAND_LENGTH];
+} Quadruplet;
+
+Quadruplet quadruplets[MAX_QUADS];
+int quad_index = 0;
+
+int temp_var_counter = 0;
+int label_counter = 0;
+
+// Function to generate a new temporary variable name
+char* new_temp() {
+    char* temp_name = (char*)malloc(sizeof(char) * (MAX_OPERAND_LENGTH + 1));
+    if (temp_name == NULL) {
+        fprintf(stderr, "Error: Memory allocation failed for temporary variable.\n");
+        exit(EXIT_FAILURE);
+    }
+    sprintf(temp_name, "t%d", temp_var_counter++);
+    return temp_name;
+}
+
+// Function to generate a new label name
+char* new_label() {
+    char* label_name = (char*)malloc(sizeof(char) * (MAX_LABEL_LENGTH + 1));
+    if (label_name == NULL) {
+        fprintf(stderr, "Error: Memory allocation failed for label.\n");
+        exit(EXIT_FAILURE);
+    }
+    sprintf(label_name, "L%d", label_counter++);
+    return label_name;
+}
+
+// Function to add a new quadruplet
+void emit(const char* op, const char* arg1, const char* arg2, const char* res) {
+    if (quad_index < MAX_QUADS) {
+        strncpy(quadruplets[quad_index].operator, op, sizeof(quadruplets[quadruplex].operator) - 1);
+        quadruplets[quad_index].operator[sizeof(quadruplets[quad_index].operator) - 1] = '\0';
+        strncpy(quadruplets[quad_index].operand1, arg1, sizeof(quadruplets[quad_index].operand1) - 1);
+        quadruplets[quad_index].operand1[sizeof(quadruplets[quad_index].operand1) - 1] = '\0';
+        strncpy(quadruplets[quad_index].operand2, arg2, sizeof(quadruplets[quad_index].operand2) - 1);
+        quadruplets[quad_index].operand2[sizeof(quadruplets[quad_index].operand2) - 1] = '\0';
+        strncpy(quadruplets[quad_index].result, res, sizeof(quadruplets[quad_index].result) - 1);
+        quadruplets[quad_index].result[sizeof(quadruplets[quad_index].result) - 1] = '\0';
+        quad_index++;
+    } else {
+        fprintf(stderr, "Error: Maximum number of quadruplets reached!\n");
+        exit(EXIT_FAILURE);
+    }
+}
+
+// Function to print the generated quadruplets
+void print_quadruplets() {
+    printf("\n--- Generated Quadruplets ---\n");
+    for (int i = 0; i < quad_index; i++) {
+        printf("%d: (%s, %s, %s, %s)\n", i,
+               quadruplets[i].operator,
+               quadruplets[i].operand1,
+               quadruplets[i].operand2,
+               quadruplets[i].result);
+    }
+    printf("-----------------------------\n");
+}
 
 %}
 
@@ -53,6 +127,7 @@ DEBUT : MainPrgm idf pnt_virgul
          INSTRUCTIONS 
          accolade_ferm EndPg pnt_virgul {
           printf("/******************************* Programme correcte syntaxiquement ***********************************/"); 
+          print_quadruplets(); // Add this line
           YYACCEPT ;
         };
 
@@ -195,39 +270,71 @@ AFFECTATION_TAB : corechet_ouvr entier_pos corechet_ferm AFFECTATION_NOR {
                     }  
                   };
 AFFECTATION_NOR : affect EXPRESSION_ADD pnt_virgul {
-                  if (strcmp(recherchertype(sauv), checkNumberType($2)) != 0   ) { 
-                    printf (" erreur semantique non compatibilite de type de la variable %s a la ligne %d la colonne %d \n", sauv ,num_de_lignes , col) ;
-                  }
-                  if (kindVal(sauv) == 1) {
-                    printf("erreur semantique modification de valeur de constante %s à la ligne %d la colonne %d \n", sauv, num_de_lignes , col);
-                  }else{
-                    insererVal (sauv, $2 , 0) ;
-                  }
-                  $$ = $2 ;
-                } ;
+                      if (strcmp(recherchertype(sauv), checkNumberType($2)) != 0) {
+                          printf(" erreur semantique non compatibilite de type de la variable %s a la ligne %d la colonne %d \n", sauv, num_de_lignes, col);
+                      }
+                      if (kindVal(sauv) == 1) {
+                          printf("erreur semantique modification de valeur de constante %s à la ligne %d la colonne %d \n", sauv, num_de_lignes, col);
+                      } else {
+                          emit("=", $2, "", sauv); // Operator '=', Operand 1 is the expression result, Result is the variable 'sauv'
+                          insererVal(sauv, $2, 0); // Keep your semantic action for updating the symbol table
+                      }
+                      $$ = $2;
+                  };
 
-
-EXPRESSION_ADD :  parenthese_ouvr EXPRESSION_ADD parenthese_ferm { $$ = $2 ;}
-                | EXPRESSION_ADD  add EXPRESSION_ADD { $$ = $1 + $3 ; }
-                | EXPRESSION_ADD soustract EXPRESSION_ADD { $$ = $1 - $3 ;}
-                | EXPRESSION_ADD multipl EXPRESSION_ADD { $$ = $1 * $3 ;}
-                | EXPRESSION_ADD division EXPRESSION_ADD  {
-                                                      if ($3 == 0) {
-                                                        printf("erreur semantique division par zero a la ligne %d la colonne %d \n", num_de_lignes ,col);
-                                                      }
-                                                      $$ = $1 / $3 ;
-                                                    }
-                | neg EXPRESSION_ADD { $$ = -$2 ;}
-                | idf { 
-                  $$ = rechercherval($1);
-                  if (rechercheType($1,0)== 0){
-                    printf ("erreur semantique non declaration de : %s a la ligne %d la colonne %d \n",$1,num_de_lignes , col);
-                  } 
-                }
-                | VALEUR {  $$ = $1 ; } ;
-
-
-
+EXPRESSION_ADD : parenthese_ouvr EXPRESSION_ADD parenthese_ferm { $$ = $2; }
+        | EXPRESSION_ADD add EXPRESSION_ADD
+          {
+              char* temp = new_temp();
+              emit("+", $1, $3, temp);
+              $$ = temp;
+          }
+        | EXPRESSION_ADD soustract EXPRESSION_ADD
+          {
+              char* temp = new_temp();
+              emit("-", $1, $3, temp);
+              $$ = temp;
+          }
+        | EXPRESSION_ADD multipl EXPRESSION_ADD
+          {
+              char* temp = new_temp();
+              emit("*", $1, $3, temp);
+              $$ = temp;
+          }
+        | EXPRESSION_ADD division EXPRESSION_ADD
+          {
+              if ($3 == 0) {
+                  printf("erreur semantique division par zero a la ligne %d la colonne %d \n", num_de_lignes ,col);
+              } else {
+                  char* temp = new_temp();
+                  emit("/", $1, $3, temp);
+                  $$ = temp;
+              }
+          }
+        | neg EXPRESSION_ADD
+          {
+              char* temp = new_temp();
+              emit("neg", $2, "", temp); // Operand 2 is not used for negation
+              $$ = temp;
+          }
+        | idf
+          {
+              $$ = strdup($1); // Use the identifier name directly as operand
+              if (rechercheType($1,0)== 0){
+                  printf ("erreur semantique non declaration de : %s a la ligne %d la colonne %d \n",$1,num_de_lignes , col);
+              }
+          }
+        | VALEUR
+          {
+              char* temp_val = (char*)malloc(sizeof(char) * (MAX_OPERAND_LENGTH + 1));
+              if (temp_val == NULL) {
+                  fprintf(stderr, "Error: Memory allocation failed for value string.\n");
+                  exit(EXIT_FAILURE);
+              }
+              sprintf(temp_val, "%g", $1); // Convert the float/int value to a string
+              $$ = temp_val;
+          }
+        ;
 
 INPUT : lire parenthese_ouvr VARIABLE parenthese_ferm pnt_virgul  { int i;
                                                                     for ( i = 0;i < cpt; i++ ){   
