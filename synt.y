@@ -8,6 +8,7 @@
 extern int num_de_lignes;
 extern int col;
 extern char *yytext; 
+extern void interpret_quadruplets();
 char tabl_inter [100][20];
 char tabl_inter2 [100][20];
 int cpt= 0;
@@ -345,7 +346,9 @@ INPUT : lire parenthese_ouvr VARIABLE parenthese_ferm pnt_virgul  { int i;
                                                                   };
 
 
-OUTPUT : output parenthese_ouvr DANS_OUTPUT parenthese_ferm pnt_virgul ;
+OUTPUT : output parenthese_ouvr DANS_OUTPUT parenthese_ferm pnt_virgul  {
+             emit("output", $3, "", ""); // Operand 1 will be the variable name to output
+         };
 
 DANS_OUTPUT: chaine 
            | idf { 
@@ -383,9 +386,11 @@ LOOP_FOR : boucle_for IDFS from entier_pos to entier_pos step entier_pos accolad
 
 %%
 int main() {
-  initialization(); 
+  initialization();
   yyparse();
-  afficher();
+  afficher(); // Your existing function to print symbol table
+  interpret_quadruplets(); // Call the interpreter
+  return 0;
 }
 
 yywrap(){return 1;}
